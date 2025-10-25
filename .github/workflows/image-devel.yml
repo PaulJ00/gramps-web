@@ -37,20 +37,18 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: tag and push devel image
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          file: Dockerfile.devel
-          platforms: linux/amd64,linux/arm64
-          push: true
-          tags: ghcr.io/gramps-project/grampsweb:latest-devel
+
+        run: |
+          docker build --push \
+            --tag ghcr.io/paulj00/grampsweb:latest-devel \
+            --platform linux/amd64,linux/arm/v7,linux/arm64 \
+            -f Dockerfile.devel .
       - name: Clean up dangling images
         run: docker image prune -f -a
       - name: tag and push devel nginx image
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          file: Dockerfile.nginx
-          platforms: linux/amd64,linux/arm64
-          push: true
-          tags: ghcr.io/gramps-project/grampsjs:latest-devel
+        run: |
+          docker build --push \
+            --tag ghcr.io/paulj00/grampsweb:latest-devel \
+            --platform linux/amd64,linux/arm/v7,linux/arm64 \
+            -f Dockerfile.nginx .
+
